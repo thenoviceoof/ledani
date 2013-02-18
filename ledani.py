@@ -2,7 +2,7 @@
 The polling part of the project
 '''
 
-#from RPi import GPIO
+from RPi import GPIO
 
 import envoy
 import threading
@@ -69,7 +69,13 @@ def effect_pins(pins):
     '''
     Does the actual work of flipping the state of pins
     '''
-    # for each pin, flip that state! flip that state!
+    GPIO.setmode(GPIO.BOARD)
+    for pin,state in pins.iteritems():
+        GPIO.setup(pin, GPIO.OUT)
+        if state:
+            GPIO.output(pin, GPIO.HIGH)
+        else:
+            GPIO.output(pin, GPIO.LOW)
 
 ################################################################################
 # main
