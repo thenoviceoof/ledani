@@ -1,0 +1,9 @@
+*.pyc
+*~
+*.swp
+
+# virtualenv stuff
+bin
+include
+lib
+local
