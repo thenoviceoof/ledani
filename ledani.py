@@ -67,7 +67,8 @@ def mac_to_pin(macs):
 
 def effect_pins(pins):
     '''
-    Does the actual work of flipping the state of pins
+    Given a mapping of pins to states {pin: state}, set the pins to
+    the right state
     '''
     GPIO.setmode(GPIO.BOARD)
     for pin,state in pins.iteritems():
