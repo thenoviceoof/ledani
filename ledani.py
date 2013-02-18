@@ -39,13 +39,15 @@ def find_hosts():
 
 def find_macs(hosts):
     '''
-    Given a host, find it's MAC address via ARP
+    Given a list of hosts, find their MAC addresses via ARP
     '''
     macs = []
     for h in hosts:
         r = envoy.run('arp {0}'.format(h))
         if r.status_code == 0:
+            # ugh parsing CLI output
             lines = r.std_out.split('\n')[1:]
+            # ugh case-handling output formatting
             if lines and len(lines[0]) > 2:
                 mac = lines[0].split()[2]
                 macs.append(mac)
@@ -53,6 +55,21 @@ def find_macs(hosts):
 
 ################################################################################
 # LED fiddling
+
+def mac_to_pin(macs):
+    '''
+    Map from recognized MAC addresses to which pins to flip, using a
+    text config
+    '''
+    # get config
+    # go through each person's stored MAC, see if it's in the given list
+    # if so, turn that pin on
+
+def effect_pins(pins):
+    '''
+    Does the actual work of flipping the state of pins
+    '''
+    # for each pin, flip that state! flip that state!
 
 ################################################################################
 # main
