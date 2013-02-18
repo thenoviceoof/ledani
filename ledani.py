@@ -35,7 +35,7 @@ def find_hosts():
     while not host_queue.empty():
         host = host_queue.get()
         hosts.append(host)
-    return hosts
+    return sorted(hosts)
 
 def find_macs(hosts):
     '''
@@ -51,7 +51,7 @@ def find_macs(hosts):
             if lines and len(lines[0]) > 2:
                 mac = lines[0].split()[2]
                 macs.append(mac)
-    return macs
+    return sorted(macs)
 
 ################################################################################
 # LED fiddling
