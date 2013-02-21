@@ -65,7 +65,7 @@ def mac_to_pin(macs, config):
     '''
     pins = {}
     for mac,pin in config.items('MAC'):
-        pins[pin] = bool(mac in macs)
+        pins[int(pin)] = bool(mac in macs)
     return pins
 
 def effect_pins(pins):
