@@ -2,11 +2,13 @@
 The polling part of the project
 '''
 
-from RPi import GPIO
+from argparse import ArgumentParser
+from ConfigParser import ConfigParser
 
 import envoy
 import threading
 from Queue import Queue
+from RPi import GPIO
 
 from pprint import pprint
 
@@ -18,7 +20,7 @@ def check_host(host, host_queue):
     if r.status_code == 0:
         host_queue.put(host)
 
-def find_hosts():
+def find_hosts(ip_range):
     '''
     Find hosts by pinging them in parallel
     '''
@@ -51,19 +53,20 @@ def find_macs(hosts):
             if lines and len(lines[0]) > 2:
                 mac = lines[0].split()[2]
                 macs.append(mac)
-    return sorted(macs)
+    return sorted(set(macs))
 
 ################################################################################
 # LED fiddling
 
-def mac_to_pin(macs):
+def mac_to_pin(macs, config):
     '''
     Map from recognized MAC addresses to which pins to flip, using a
     text config
     '''
-    # get config
-    # go through each person's stored MAC, see if it's in the given list
-    # if so, turn that pin on
+    pins = {}
+    for mac,pin in config.items('MAC'):
+        pins[pin] = bool(mac in macs)
+    return pins
 
 def effect_pins(pins):
     '''
@@ -81,7 +84,21 @@ def effect_pins(pins):
 ################################################################################
 # main
 
-hosts = find_hosts()
-print hosts
-macs = find_macs(hosts)
-print macs
+if __name__ == '__main__':
+    parser = ArgumentParser(description=('A utility to flip raspberry pi GPIO '
+                                         'outputs based on the presence of MAC '
+                                         'addresses on a network.'))
+    parser.add_argument('config', type='str', default='ledani.conf',
+                        help=('Path to the configuration file containing the '
+                              'MAC address to pin mapping, and IP ranges to '
+                              'scan.'))
+    args = parser.parse_args()
+
+    config = ConfigParser()
+    config.readfp(open(args.config))
+    ips = config.get('IP', 'address-range')
+
+    hosts = find_hosts(ips)
+    macs = find_macs(hosts)
+    pins = mac_to_pin(macs, config)
+    effect_pins(pins)
