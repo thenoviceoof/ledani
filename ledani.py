@@ -106,7 +106,6 @@ def effect_pins(pins):
     Given a mapping of pins to states {pin: state}, set the pins to
     the right state
     '''
-    GPIO.setmode(GPIO.BOARD)
     for pin,state in pins.iteritems():
         GPIO.setup(pin, GPIO.OUT)
         if state:
@@ -130,7 +129,18 @@ if __name__ == '__main__':
     config = ConfigParser()
     config.readfp(open(args.config))
 
-    hosts = find_hosts()
-    macs = find_macs(hosts)
-    pins = mac_to_pin(macs, config)
-    effect_pins(pins)
+    status_pin = config.get('STATUS', 'pin')
+
+    GPIO.setmode(GPIO.BOARD)
+    try:
+        hosts = find_hosts()
+        macs = find_macs(hosts)
+        pins = mac_to_pin(macs, config)
+        effect_pins(pins)
+    except:
+        # if everything goes wrong, set the status pin to off
+        GPIO.setup(status_pin, GPIO.OUT)
+        GPIO.output(status_pin, GPIO.LOW)
+    else:
+        GPIO.setup(status_pin, GPIO.OUT)
+        GPIO.output(status_pin, GPIO.HIGH)
