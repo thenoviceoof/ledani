@@ -8,7 +8,10 @@ from ConfigParser import ConfigParser
 import envoy
 import threading
 from Queue import Queue
-from RPi import GPIO
+#from RPi import GPIO
+
+import struct
+import socket
 
 from pprint import pprint
 
@@ -20,15 +23,45 @@ def check_host(host, host_queue):
     if r.status_code == 0:
         host_queue.put(host)
 
-def find_hosts(ip_range):
+def get_ip_addr():
+    '''
+    Get the current ip address and subnet mask
+    '''
+    r = envoy.run('ip addr')
+    lines = r.std_out.split('\n')
+    inets = [l.strip().split() for l in lines if l.strip().startswith('inet ')]
+    inets = [i for i in inets if not i[1].startswith('127')]
+    if len(inets) == 1:
+        return inets[0][1]
+    elif inets:
+        raise ValueError('Too many suitable IP addresses found')
+    else:
+        raise ValueError('No suitable IP address found')
+    
+def generate_ips(ip_range):
+    '''
+    Given an ip range of the format X.X.X.X/Y, generate a series of IP
+    addresses in that range
+    '''
+    addr, mask_size = ip_range.split('/')
+    mask_size = int(mask_size)
+    # convert the address stuff to numbers
+    mask = (2 << (mask_size-1)) - 1
+    start = struct.unpack('I', socket.inet_aton(addr))[0]
+    start = start & mask
+    # to do addition, need to flip the octets around
+    base = struct.unpack('I', struct.pack('I', start)[::-1])[0]
+    for i in range((2 << (32 - mask_size - 1)) - 1):
+        yield socket.inet_ntoa(struct.pack('I', base + i)[::-1])
+
+def find_hosts():
     '''
     Find hosts by pinging them in parallel
     '''
     hosts = []
     threads = []
     host_queue = Queue()
-    for i in range(255):
-        h = '192.168.1.{0}'.format(i+1)
+    for h in generate_ips(get_ip_addr()):
         thread = threading.Thread(target=check_host, args=(h, host_queue))
         thread.start()
         threads.append(thread)
@@ -96,9 +129,8 @@ if __name__ == '__main__':
 
     config = ConfigParser()
     config.readfp(open(args.config))
-    ips = config.get('IP', 'address-range')
 
-    hosts = find_hosts(ips)
+    hosts = find_hosts()
     macs = find_macs(hosts)
     pins = mac_to_pin(macs, config)
     effect_pins(pins)
