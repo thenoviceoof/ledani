@@ -7,3 +7,5 @@ bin
 include
 lib
 local
+
+ledani.conf
