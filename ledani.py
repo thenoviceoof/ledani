@@ -64,7 +64,7 @@ def mac_to_pin(macs, config):
     text config
     '''
     pins = {}
-    for mac,pin in config.items('MAC'):
+    for pin,mac in config.items('MAC'):
         pins[int(pin)] = bool(mac in macs)
     return pins
 
@@ -88,7 +88,7 @@ if __name__ == '__main__':
     parser = ArgumentParser(description=('A utility to flip raspberry pi GPIO '
                                          'outputs based on the presence of MAC '
                                          'addresses on a network.'))
-    parser.add_argument('config', type='str', default='ledani.conf',
+    parser.add_argument('--conf', dest='config', type=str, default='ledani.conf',
                         help=('Path to the configuration file containing the '
                               'MAC address to pin mapping, and IP ranges to '
                               'scan.'))
