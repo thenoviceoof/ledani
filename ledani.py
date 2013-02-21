@@ -3,7 +3,7 @@ The polling part of the project
 '''
 
 from argparse import ArgumentParser
-from ConfigParser import ConfigParser
+import ConfigParser.ConfigParser
 
 import envoy
 import threading
@@ -126,10 +126,13 @@ if __name__ == '__main__':
                               'scan.'))
     args = parser.parse_args()
 
-    config = ConfigParser()
+    config = ConfigParser.ConfigParser()
     config.readfp(open(args.config))
 
-    status_pin = config.get('STATUS', 'pin')
+    try:
+        status_pin = config.get('STATUS', 'pin')
+    except ConfigParser.NoOptionError:
+        status_pin = None
 
     GPIO.setmode(GPIO.BOARD)
     try:
@@ -137,10 +140,14 @@ if __name__ == '__main__':
         macs = find_macs(hosts)
         pins = mac_to_pin(macs, config)
         effect_pins(pins)
-    except:
+    except Exception as e:
         # if everything goes wrong, set the status pin to off
-        GPIO.setup(status_pin, GPIO.OUT)
-        GPIO.output(status_pin, GPIO.LOW)
+        if status_pin:
+            GPIO.setup(status_pin, GPIO.OUT)
+            GPIO.output(status_pin, GPIO.LOW)
+        # and re-raise for useful cronjob output
+        raise e
     else:
-        GPIO.setup(status_pin, GPIO.OUT)
-        GPIO.output(status_pin, GPIO.HIGH)
+        if status_pin:
+            GPIO.setup(status_pin, GPIO.OUT)
+            GPIO.output(status_pin, GPIO.HIGH)
