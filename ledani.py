@@ -3,7 +3,7 @@ The polling part of the project
 '''
 
 from argparse import ArgumentParser
-import ConfigParser.ConfigParser
+import ConfigParser
 
 import envoy
 import threading
