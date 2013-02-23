@@ -8,12 +8,10 @@ import ConfigParser
 import envoy
 import threading
 from Queue import Queue
-#from RPi import GPIO
+from RPi import GPIO
 
 import struct
 import socket
-
-from pprint import pprint
 
 ################################################################################
 # networking checks
