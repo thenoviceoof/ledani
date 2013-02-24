@@ -128,7 +128,7 @@ if __name__ == '__main__':
     config.readfp(open(args.config))
 
     try:
-        status_pin = config.get('STATUS', 'pin')
+        status_pin = int(config.get('STATUS', 'pin'))
     except ConfigParser.NoOptionError:
         status_pin = None
 
