@@ -14,7 +14,7 @@
    id="svg2"
    version="1.1"
    inkscape:version="0.48.3.1 r9886"
-   sodipodi:docname="drawing_0.125.svg">
+   sodipodi:docname="drawing_0.125.pdf">
   <defs
      id="defs4" />
   <sodipodi:namedview
@@ -24,9 +24,9 @@
      borderopacity="1.0"
      inkscape:pageopacity="0.0"
      inkscape:pageshadow="2"
-     inkscape:zoom="1.4142136"
-     inkscape:cx="980.16718"
-     inkscape:cy="779.2317"
+     inkscape:zoom="1"
+     inkscape:cx="1279.5455"
+     inkscape:cy="284.17036"
      inkscape:document-units="in"
      inkscape:current-layer="layer3"
      showgrid="true"
@@ -56,7 +56,7 @@
         <dc:format>image/svg+xml</dc:format>
         <dc:type
            rdf:resource="http://purl.org/dc/dcmitype/StillImage" />
-        <dc:title />
+        <dc:title></dc:title>
       </cc:Work>
     </rdf:RDF>
   </metadata>
@@ -590,8 +590,8 @@
        id="rect4789"
        inkscape:connector-curvature="0" />
     <path
-       style="fill:none;stroke:#000000;stroke-width:0.27;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:4;stroke-opacity:1;stroke-dasharray:none"
-       d="m 1231.875,810 73.125,0 0,-11.25 67.5,0 0,11.25 180,0 0,-11.25 67.5,0 0,11.25 73.125,0 11.25,0 0,11.25 0,33.75 -11.25,0 0,45 -73.125,0 0,11.25 -67.5,0 0,-11.25 -180,0 0,11.25 -67.5,0 0,-11.25 -73.125,0 -11.25,0 0,-11.25 0,-33.75 11.25,0 z"
+       style="fill:none;stroke:#000000;stroke-width:0.27000001;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:4;stroke-opacity:1;stroke-dasharray:none"
+       d="m 1231.875,810 73.125,0 0,-11.25 67.5,0 0,11.25 180,0 0,-11.25 67.5,0 0,11.25 73.125,0 0,45 11.25,0 0,33.75 0,11.25 -11.25,0 -73.125,0 0,11.25 -67.5,0 0,-11.25 -180,0 0,11.25 -67.5,0 0,-11.25 -73.125,0 -11.25,0 0,-11.25 0,-33.75 11.25,0 z"
        id="path4793"
        inkscape:connector-curvature="0"
        sodipodi:nodetypes="ccccccccccccccccccccccccccccc" />
