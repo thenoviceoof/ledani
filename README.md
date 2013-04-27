@@ -40,6 +40,8 @@ Now, wire up the LEDs in series with the resistors, wiring them
 through the holes, using glue to hold everything together (with a
 possible extension using PCBs to tie everything together in a neater fashion).
 
+NOTE: There's a circuit/pcb for the LEDs http://www.circuits.io/circuits/3238
+
 USAGE
 --------------------------------------------------------------------------------
 While you're doing the BUILD, ssh into the raspi and clone the repo
